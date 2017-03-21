@@ -15,6 +15,7 @@ import com.ctrip.framework.apollo.portal.spi.defaultimpl.DefaultLogoutHandler;
 import com.ctrip.framework.apollo.portal.spi.defaultimpl.DefaultSsoHeartbeatHandler;
 import com.ctrip.framework.apollo.portal.spi.defaultimpl.DefaultUserInfoHolder;
 import com.ctrip.framework.apollo.portal.spi.defaultimpl.DefaultUserService;
+import com.ctrip.framework.apollo.portal.spi.zentao.ZentaoUserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -202,6 +203,33 @@ public class AuthConfiguration {
       return new DefaultUserService();
     }
   }
+  
+  @Configuration
+  @Profile("zentao")
+  static class ZentaoAuthAutoConfiguration {
 
+	    @Bean
+	    @ConditionalOnMissingBean(SsoHeartbeatHandler.class)
+	    public SsoHeartbeatHandler defaultSsoHeartbeatHandler() {
+	      return new DefaultSsoHeartbeatHandler();
+	    }
 
+	    @Bean
+	    @ConditionalOnMissingBean(UserInfoHolder.class)
+	    public DefaultUserInfoHolder notCtripUserInfoHolder() {
+	      return new DefaultUserInfoHolder();
+	    }
+
+	    @Bean
+	    @ConditionalOnMissingBean(LogoutHandler.class)
+	    public DefaultLogoutHandler logoutHandler() {
+	      return new DefaultLogoutHandler();
+	    }
+
+	    @Bean
+	    @ConditionalOnMissingBean(UserService.class)
+	    public UserService defaultUserService() {
+	      return new ZentaoUserService();
+	    }
+	  }
 }
