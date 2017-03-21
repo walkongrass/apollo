@@ -176,7 +176,7 @@ public class AuthConfiguration {
    * spring.profiles.active != ctrip
    */
   @Configuration
-  @Profile({"!ctrip"})
+  @Profile({"!zentao"})
   static class DefaultAuthAutoConfiguration {
 
     @Bean
